@@ -19,6 +19,8 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
     // Form State
     const [title, setTitle] = useState(event?.title || '')
     const [date, setDate] = useState(event?.date || '')
+    const [isMultiDay, setIsMultiDay] = useState(!!event?.end_date)
+    const [endDate, setEndDate] = useState(event?.end_date || '')
     const [time, setTime] = useState(event?.time || '6:30 PM')
     const [type, setType] = useState(event?.type || 'local')
     const [locationId, setLocationId] = useState(event?.location_id || (locations.length > 0 ? locations[0].id : ''))
@@ -39,6 +41,7 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
             const eventData = {
                 title,
                 date,
+                end_date: isMultiDay ? endDate : null,
                 time,
                 type,
                 location_id: useCustomLocation ? null : locationId,
@@ -100,18 +103,53 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                     />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                    {/* Date */}
-                    <div>
-                        <label className={labelStyles}>Date</label>
-                        <input
-                            required
-                            type="date"
-                            value={date}
-                            onChange={e => setDate(e.target.value)}
-                            className={`${inputStyles} [color-scheme:dark]`}
-                        />
+                <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer text-sm text-neutral-400 hover:text-white transition-colors">
+                            <input
+                                type="checkbox"
+                                checked={isMultiDay}
+                                onChange={(e) => setIsMultiDay(e.target.checked)}
+                                className="rounded bg-white/5 border-white/10 text-[var(--color-primary)] focus:ring-[var(--color-primary)] focus:ring-offset-0"
+                            />
+                            Multi-day Event
+                        </label>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        {/* Start Date */}
+                        <div>
+                            <label className={labelStyles}>{isMultiDay ? 'Start Date' : 'Date'}</label>
+                            <div className="relative">
+                                <input
+                                    required
+                                    type="date"
+                                    value={date}
+                                    onChange={e => setDate(e.target.value)}
+                                    className={`${inputStyles} [color-scheme:dark] w-full max-w-full`}
+                                />
+                            </div>
+                        </div>
+                        {/* End Date */}
+                        {isMultiDay && (
+                            <div>
+                                <label className={labelStyles}>End Date</label>
+                                <div className="relative">
+                                    <input
+                                        required
+                                        type="date"
+                                        value={endDate}
+                                        min={date}
+                                        onChange={e => setEndDate(e.target.value)}
+                                        className={`${inputStyles} [color-scheme:dark] w-full max-w-full`}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
                     {/* Time */}
                     <div>
                         <label className={labelStyles}>Time</label>
@@ -124,22 +162,20 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                             placeholder="e.g. 7:00 PM"
                         />
                     </div>
-                </div>
-
-                {/* Type */}
-                {/* Type */}
-                <div>
-                    <label className={labelStyles}>Event Type</label>
-                    <div className="relative">
-                        <select
-                            value={type}
-                            onChange={e => setType(e.target.value)}
-                            className={inputStyles}
-                        >
-                            <option value="local" className="bg-neutral-900">Local</option>
-                            <option value="special" className="bg-neutral-900">Special</option>
-                            <option value="travel" className="bg-neutral-900">Travel</option>
-                        </select>
+                    {/* Type */}
+                    <div>
+                        <label className={labelStyles}>Event Type</label>
+                        <div className="relative">
+                            <select
+                                value={type}
+                                onChange={e => setType(e.target.value)}
+                                className={inputStyles}
+                            >
+                                <option value="local" className="bg-neutral-900">Local</option>
+                                <option value="special" className="bg-neutral-900">Special</option>
+                                <option value="travel" className="bg-neutral-900">Travel</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>

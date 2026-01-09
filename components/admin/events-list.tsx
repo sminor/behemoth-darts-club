@@ -26,12 +26,25 @@ export function EventsList({ events }: { events: any[] }) {
     });
 
     // Helper for safe date display
-    const formatDate = (dateStr: string) => {
+    const formatDate = (dateStr: string, endDateStr?: string | null) => {
         if (!dateStr) return '';
-        // Create date object treating input as Local Time midnight (by appending time without Z)
-        // This ensures it stays on the correct day regardless of browser timezone
-        const date = new Date(`${dateStr}T00:00:00`);
-        return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        const startDate = new Date(`${dateStr}T00:00:00`);
+        const startMonth = startDate.toLocaleDateString('en-US', { month: 'short' });
+        const startDay = startDate.getDate();
+
+        if (endDateStr) {
+            const endDate = new Date(`${endDateStr}T00:00:00`);
+            const endMonth = endDate.toLocaleDateString('en-US', { month: 'short' });
+            const endDay = endDate.getDate();
+
+            if (startMonth === endMonth) {
+                return `${startMonth} ${startDay} - ${endDay}`;
+            } else {
+                return `${startMonth} ${startDay} - ${endMonth} ${endDay}`;
+            }
+        }
+
+        return startDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
     };
 
     return (
@@ -67,7 +80,7 @@ export function EventsList({ events }: { events: any[] }) {
                         <thead className="text-xs uppercase bg-white/5 text-neutral-400">
                             <tr>
                                 <th className="px-6 py-4">Event</th>
-                                <th className="px-6 py-4">Date & Time</th>
+                                <th className="px-6 py-4">Date</th>
                                 <th className="px-6 py-4">Location</th>
                                 <th className="px-6 py-4 text-right"></th>
                             </tr>
@@ -88,11 +101,11 @@ export function EventsList({ events }: { events: any[] }) {
                                         <tr key={event.id} className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors group">
                                             <td className="px-6 py-4">
                                                 <div className="flex items-start gap-3">
-                                                    <div className={`mt-1 p-1.5 rounded bg-white/5 border border-white/10 ${isSpecial ? 'text-amber-500 border-amber-500/20 bg-amber-500/10' : ''} ${isTravel ? 'text-blue-400 border-blue-500/20 bg-blue-500/10' : ''}`}>
-                                                        {isSpecial ? <PartyPopper className="w-4 h-4" /> : isTravel ? <Plane className="w-4 h-4" /> : <Calendar className="w-4 h-4 text-neutral-400" />}
+                                                    <div className="mt-1 p-1.5 rounded bg-white/5 border border-white/10 text-[var(--color-primary)] border-[var(--color-primary)]/20 bg-[var(--color-primary)]/10">
+                                                        {isSpecial ? <PartyPopper className="w-4 h-4" /> : isTravel ? <Plane className="w-4 h-4" /> : <Calendar className="w-4 h-4" />}
                                                     </div>
                                                     <div>
-                                                        <div className="font-bold text-white group-hover:text-[var(--color-primary)] transition-colors">
+                                                        <div className="font-bold text-white transition-colors group-hover:text-[var(--color-primary)]">
                                                             {event.title}
                                                         </div>
                                                         <div className="text-xs text-neutral-500 line-clamp-1 mt-0.5">
@@ -108,7 +121,7 @@ export function EventsList({ events }: { events: any[] }) {
                                             <td className="px-6 py-4">
                                                 <div className="flex flex-col">
                                                     <span className="text-sm text-white font-medium">
-                                                        {formatDate(event.date)}
+                                                        {formatDate(event.date, event.end_date)}
                                                     </span>
                                                     <span className="text-xs text-neutral-500">{event.time}</span>
                                                 </div>

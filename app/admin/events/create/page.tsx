@@ -14,7 +14,7 @@ export default async function CreateEventPage() {
         .order('name', { ascending: true })
 
     return (
-        <div className="max-w-2xl mx-auto space-y-6">
+        <div className="space-y-6">
             <div className="flex items-center gap-4 mb-8">
                 <Link href="/admin/events" className="p-2 hover:bg-white/10 rounded-full transition-colors text-neutral-400 hover:text-white">
                     <ArrowLeft className="w-5 h-5" />

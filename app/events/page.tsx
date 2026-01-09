@@ -67,10 +67,15 @@ export default async function EventsPage() {
     // Filter out past events
     // Filter out past events
     // Use ISO string comparison for date filtering to be timezone-agnostic relative to "Today"
-    // We want to show events that are >= Today (local date)
+    // We want to show events that are >= Today (local date) OR end_date >= Today
     const todayStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
 
     const futureEvents = processedEvents.filter(e => {
+        // If it has an end date, check if end date is in future/today
+        if (e.end_date) {
+            return e.end_date >= todayStr;
+        }
+        // Otherwise use start date
         return e.date >= todayStr;
     });
 
@@ -89,6 +94,21 @@ export default async function EventsPage() {
     }, {} as Record<string, typeof listEvents>);
 
     const sortedMonths = Object.keys(groupedEvents).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+    // Helper for date range display
+    const formatDateRange = (dateStr: string, endDateStr?: string | null) => {
+        const dateObj = parseDate(dateStr);
+        if (!endDateStr) return dateObj.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+        const endDateObj = parseDate(endDateStr);
+        const startMonth = dateObj.toLocaleDateString('en-US', { month: 'long' });
+        const endMonth = endDateObj.toLocaleDateString('en-US', { month: 'long' });
+
+        if (startMonth === endMonth) {
+            return `${startMonth} ${dateObj.getDate()} - ${endDateObj.getDate()}, ${dateObj.getFullYear()}`;
+        }
+        return `${startMonth} ${dateObj.getDate()} - ${endMonth} ${endDateObj.getDate()}, ${dateObj.getFullYear()}`;
+    };
 
     return (
         <main className="min-h-screen bg-[var(--background)] pb-24">
@@ -120,14 +140,14 @@ export default async function EventsPage() {
                 {/* Next Up Hero */}
                 {nextEvent && (
                     <div className="max-w-6xl mx-auto mb-16">
-                        <div className={`relative overflow-hidden rounded-2xl border ${nextEvent.type === 'special' ? 'border-amber-500/30 bg-gradient-to-br from-amber-500/20' : 'border-[var(--color-primary)]/30 bg-gradient-to-br from-[var(--color-primary)]/20'} to-neutral-900/50 p-8 md:p-12 shadow-2xl transition-all duration-500`}>
+                        <div className="relative overflow-hidden rounded-2xl border border-[var(--color-primary)]/30 bg-gradient-to-br from-[var(--color-primary)]/20 to-neutral-900/50 p-8 md:p-12 shadow-2xl transition-all duration-500">
                             {/* Background Deco */}
-                            <div className={`absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 ${nextEvent.type === 'special' ? 'bg-amber-500' : 'bg-[var(--color-primary)]'} opacity-10 blur-3xl rounded-full pointer-events-none`}></div>
+                            <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-[var(--color-primary)] opacity-10 blur-3xl rounded-full pointer-events-none"></div>
 
                             <div className="relative z-10 flex flex-col md:flex-row gap-8 items-start justify-between">
                                 <div className="space-y-6 max-w-2xl w-full">
-                                    <div className={`inline-flex items-center gap-2 px-3 py-1 ${nextEvent.type === 'special' ? 'bg-amber-500 text-black' : 'bg-[var(--color-primary)] text-white'} text-xs font-bold uppercase tracking-widest rounded-full`}>
-                                        {nextEvent.type === 'special' ? <PartyPopper className="w-3 h-3" /> : <Star className="w-3 h-3 fill-current" />}
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-[var(--color-primary)] text-white text-xs font-bold uppercase tracking-widest rounded-full">
+                                        {nextEvent.type === 'special' ? <PartyPopper className="w-3 h-3" /> : nextEvent.isTravel ? <Plane className="w-3 h-3" /> : <Star className="w-3 h-3 fill-current" />}
                                         Next Up
                                     </div>
 
@@ -137,15 +157,15 @@ export default async function EventsPage() {
                                         </h2>
                                         <div className="flex flex-wrap items-center gap-6 text-lg text-neutral-200 font-medium">
                                             <div className="flex items-center gap-2">
-                                                <Calendar className={`w-5 h-5 ${nextEvent.type === 'special' ? 'text-amber-500' : 'text-[var(--color-primary)]'}`} />
-                                                {parseDate(nextEvent.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+                                                <Calendar className="w-5 h-5 text-[var(--color-primary)]" />
+                                                {formatDateRange(nextEvent.date, nextEvent.end_date)}
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <Clock className={`w-5 h-5 ${nextEvent.type === 'special' ? 'text-amber-500' : 'text-[var(--color-primary)]'}`} />
+                                                <Clock className="w-5 h-5 text-[var(--color-primary)]" />
                                                 {nextEvent.time}
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <MapPin className={`w-5 h-5 ${nextEvent.type === 'special' ? 'text-amber-500' : 'text-[var(--color-primary)]'}`} />
+                                                <MapPin className="w-5 h-5 text-[var(--color-primary)]" />
                                                 {nextEvent.locationName}
                                             </div>
                                         </div>
@@ -173,9 +193,15 @@ export default async function EventsPage() {
 
                                 {/* Date Badge Big */}
                                 <div className="hidden md:flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm border border-white/10 rounded-xl p-6 min-w-[140px] text-center shadow-lg transform rotate-2">
-                                    <span className={`text-xl font-medium uppercase tracking-widest ${nextEvent.type === 'special' ? 'text-amber-500' : 'text-[var(--color-primary)]'}`}>{parseDate(nextEvent.date).toLocaleDateString('en-US', { month: 'short' })}</span>
+                                    <span className="text-xl font-medium uppercase tracking-widest text-[var(--color-primary)]">{parseDate(nextEvent.date).toLocaleDateString('en-US', { month: 'short' })}</span>
                                     <span className="text-6xl font-black text-white leading-none my-2">{parseDate(nextEvent.date).getDate()}</span>
-                                    <span className="text-neutral-400">{parseDate(nextEvent.date).getFullYear()}</span>
+                                    {nextEvent.end_date && (
+                                        <>
+                                            <span className="text-xs text-neutral-500 uppercase font-bold my-1">to</span>
+                                            <span className="text-3xl font-black text-white leading-none">{parseDate(nextEvent.end_date).getDate()}</span>
+                                        </>
+                                    )}
+                                    <span className="text-neutral-400 mt-2">{parseDate(nextEvent.date).getFullYear()}</span>
                                 </div>
                             </div>
                         </div>
@@ -198,12 +224,18 @@ export default async function EventsPage() {
                                         const dateObj = parseDate(event.date);
 
                                         return (
-                                            <Card key={event.id} className={`group border-white/5 bg-white/[0.02] hover:bg-white/[0.06] transition-all overflow-hidden ${event.type === 'special' ? 'hover:border-amber-500/50' : 'hover:border-[var(--color-primary)]/30'}`}>
+                                            <Card key={event.id} className="group border-white/5 bg-white/[0.02] hover:bg-white/[0.06] transition-all overflow-hidden hover:border-[var(--color-primary)]/30">
                                                 <div className="flex flex-row items-stretch">
                                                     {/* Left: Date */}
-                                                    <div className={`flex-none w-20 sm:w-24 bg-white/5 transition-colors flex flex-col items-center justify-center p-2 border-r border-white/5 ${event.type === 'special' ? 'group-hover:bg-amber-500/20' : 'group-hover:bg-[var(--color-primary)]/20'}`}>
-                                                        <span className={`text-xs font-bold uppercase text-neutral-500 ${event.type === 'special' ? 'group-hover:text-amber-500' : 'group-hover:text-[var(--color-primary)]'}`}>{dateObj.toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                                                    <div className="flex-none w-20 sm:w-24 bg-white/5 transition-colors flex flex-col items-center justify-center p-2 border-r border-white/5 group-hover:bg-[var(--color-primary)]/20">
+                                                        <span className="text-xs font-bold uppercase text-neutral-500 group-hover:text-[var(--color-primary)]">{dateObj.toLocaleDateString('en-US', { weekday: 'short' })}</span>
                                                         <span className="text-2xl sm:text-3xl font-black text-white my-1">{dateObj.getDate()}</span>
+                                                        {event.end_date && (
+                                                            <div className="flex flex-col items-center -mt-1 mb-1">
+                                                                <span className="text-[10px] uppercase text-neutral-600 font-bold">to</span>
+                                                                <span className="text-xl sm:text-2xl font-black text-white">{parseDate(event.end_date).getDate()}</span>
+                                                            </div>
+                                                        )}
                                                         <span className="text-xs font-medium text-neutral-400 group-hover:text-white/80">{event.time}</span>
                                                     </div>
 
@@ -214,22 +246,22 @@ export default async function EventsPage() {
                                                                 <div className="flex items-center gap-2 mb-1">
                                                                     {/* Type Badges */}
                                                                     {event.type === 'special' && (
-                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-500 border border-amber-500/20 uppercase tracking-wider">
+                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 uppercase tracking-wider">
                                                                             <PartyPopper className="w-3 h-3 mr-1" /> Special
                                                                         </span>
                                                                     )}
                                                                     {event.isTravel && (
-                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 uppercase tracking-wider">
                                                                             <Plane className="w-3 h-3 mr-1" /> Travel
                                                                         </span>
                                                                     )}
                                                                     {event.type === 'local' && (
-                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-neutral-700 text-neutral-300 border border-neutral-600 uppercase tracking-wider">
+                                                                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20 uppercase tracking-wider">
                                                                             Local
                                                                         </span>
                                                                     )}
                                                                 </div>
-                                                                <h3 className={`text-lg sm:text-xl font-bold text-white transition-colors ${event.type === 'special' ? 'group-hover:text-amber-500' : 'group-hover:text-[var(--color-primary)]'}`}>
+                                                                <h3 className="text-lg sm:text-xl font-bold text-white transition-colors group-hover:text-[var(--color-primary)]">
                                                                     {event.title}
                                                                 </h3>
                                                                 <div className="flex items-center text-sm text-neutral-400 gap-2">
