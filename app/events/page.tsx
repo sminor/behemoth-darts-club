@@ -123,7 +123,7 @@ export default async function EventsPage() {
                         Upcoming <span className="text-[var(--color-primary)]">Events</span>
                     </h1>
                     <div className="w-[100px] flex justify-end">
-                        <Trophy className="w-5 h-5 text-[var(--color-primary)] opacity-80" />
+                        <Calendar className="w-5 h-5 text-[var(--color-primary)] opacity-80" />
                     </div>
                 </div>
             </header>
