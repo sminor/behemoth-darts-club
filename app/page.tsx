@@ -98,7 +98,7 @@ export default async function Home() {
                 </div>
                 <div className="flex flex-col">
                   <CardTitle className="text-xl">Events</CardTitle>
-                  <CardDescription className="text-xs text-neutral-400 font-normal">Weekly & special</CardDescription>
+                  <CardDescription className="text-xs text-neutral-400 font-normal">Upcoming events</CardDescription>
                 </div>
               </CardHeader>
             </Card>
@@ -112,7 +112,7 @@ export default async function Home() {
                 </div>
                 <div className="flex flex-col">
                   <CardTitle className="text-xl">Leagues</CardTitle>
-                  <CardDescription className="text-xs text-neutral-400 font-normal">Divisions & schedules</CardDescription>
+                  <CardDescription className="text-xs text-neutral-400 font-normal">Join the competition</CardDescription>
                 </div>
               </CardHeader>
             </Card>
@@ -126,7 +126,7 @@ export default async function Home() {
                 </div>
                 <div className="flex flex-col">
                   <CardTitle className="text-xl">Stats</CardTitle>
-                  <CardDescription className="text-xs text-neutral-400 font-normal">ADL & NADO tracking</CardDescription>
+                  <CardDescription className="text-xs text-neutral-400 font-normal">Player lookup</CardDescription>
                 </div>
               </CardHeader>
             </Card>
