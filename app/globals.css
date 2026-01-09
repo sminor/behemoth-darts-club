@@ -1,26 +1,192 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #121212;
+  /* Dark background matching mockup */
+  --foreground: #F5F5F5;
+  /* Light text */
+  /* Custom Brand Colors */
+  --color-primary: #156A36;
+  /* Green from matches logo */
+  --color-primary-hover: #0E4825;
+  --color-card-bg: #1E1E1E;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-card: var(--color-card-bg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -ms-hyphens: none !important;
+}
+
+/* Force disable hyphens on everything to stop "n-ew" splitting */
+* {
+  hyphens: none !important;
+  -webkit-hyphens: none !important;
+  -ms-hyphens: none !important;
+}
+
+/* Quill Dark Theme Overrides */
+.ql-toolbar {
+  background-color: #262626;
+  /* neutral-800 */
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.ql-toolbar .ql-stroke {
+  stroke: #e5e5e5 !important;
+}
+
+.ql-toolbar .ql-fill {
+  fill: #e5e5e5 !important;
+}
+
+.ql-toolbar .ql-picker {
+  color: #e5e5e5 !important;
+}
+
+.ql-container {
+  background-color: #171717;
+  /* neutral-900 */
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  font-size: 1rem !important;
+  font-family: var(--font-sans) !important;
+  /* Match site font */
+}
+
+.ql-editor {
+  min-height: 12rem;
+  color: #fff;
+  resize: vertical;
+  overflow-y: auto;
+  font-family: var(--font-sans) !important;
+  /* Match site font */
+  line-height: 1.6;
+}
+
+.ql-editor.ql-blank::before {
+  color: #a3a3a3 !important;
+  /* neutral-400 */
+  font-style: normal !important;
+}
+
+/* Force link color in editor */
+.ql-editor a {
+  color: var(--color-primary) !important;
+  text-decoration: underline;
+}
+
+.prose {
+  max-width: 100%;
+}
+
+.prose * {
+  max-width: 100%;
+  overflow-wrap: break-word !important;
+  /* 1. Prevent overflow only if word is too long */
+  word-break: normal !important;
+  /* 2. Keep normal words together */
+  hyphens: none !important;
+  /* 3. Prevent auto-hyphenation */
+}
+
+.prose p {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  line-height: 1.6 !important;
+}
+
+/* Fix huge gaps in lists */
+.prose ul,
+.prose ol {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 1.5em !important;
+  /* Keep indentation */
+  list-style-position: outside !important;
+}
+
+.prose li {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  line-height: 1.6 !important;
+}
+
+/* Prevent nested paragraphs in lists from adding space */
+.prose li p {
+  margin: 0 !important;
+}
+
+/* Ensure empty lines have height but no extra margin */
+/* Quill uses <p><br></p> for empty lines */
+.prose p:empty,
+.prose p:has(br):only-child {
+  min-height: 1.5em !important;
+  height: 1.5em !important;
+  margin: 0 !important;
+}
+
+/* Use standard brand color for links, overriding prose-invert */
+.prose :where(a),
+.prose a {
+  color: var(--color-primary) !important;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.prose :where(a):hover,
+.prose a:hover {
+  color: var(--color-primary-hover) !important;
+  text-decoration: underline;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Custom Checkbox/Input Accent */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--color-primary);
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
 }
