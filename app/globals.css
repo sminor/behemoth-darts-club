@@ -190,3 +190,42 @@ input[type="radio"] {
   width: 1.2em;
   height: 1.2em;
 }
+
+/* Google Maps InfoWindow Dark Mode Overrides */
+/* Close Button (Invert to white & reposition) */
+.gm-ui-hover-effect {
+  filter: invert(1) brightness(2) !important;
+  top: 0 !important;
+  right: 0 !important;
+  opacity: 0.8 !important;
+}
+
+/* Remove internal padding and margins to kill dead space */
+.gm-style-iw {
+  padding: 0 !important;
+}
+
+/* Container Background */
+.gm-style-iw-c {
+  background-color: #2B2B2B !important;
+  padding: 0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Pointer Arrow */
+.gm-style-iw-tc::after {
+  background: #2B2B2B !important;
+}
+
+/* Content Wrapper */
+.gm-style-iw-d {
+  background-color: transparent !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Remove default padding from content since we style it ourselves */
+.gm-style-iw-d>div {
+  padding: 0 !important;
+}

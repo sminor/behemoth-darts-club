@@ -151,7 +151,7 @@ export function LocationsMap({ locations }: LocationsMapProps) {
                     onLoad={onLoad}
                     onUnmount={onUnmount}
                     options={{
-                        disableDefaultUI: false,
+                        disableDefaultUI: true, // Remove all default white buttons (Map/Satellite, Zoom, StreetView)
                         styles: [ // Dark mode style for map
                             { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
                             { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -201,15 +201,15 @@ export function LocationsMap({ locations }: LocationsMapProps) {
                                 position={{ lat, lng }}
                                 onCloseClick={() => setSelectedLocation(null)}
                             >
-                                <div className="text-black p-2 min-w-[200px]">
-                                    <h3 className="font-bold text-lg">{selectedLocation.name}</h3>
-                                    <p className="text-sm text-gray-700">{selectedLocation.address}</p>
-                                    <p className="text-sm text-gray-600 mt-1">{selectedLocation.board_count} Boards</p>
+                                <div className="text-white p-3 pr-8 min-w-[200px]">
+                                    <h3 className="font-bold text-lg leading-tight">{selectedLocation.name}</h3>
+                                    <p className="text-sm text-neutral-300 mt-1">{selectedLocation.address}</p>
+                                    <p className="text-sm text-neutral-400 mt-1">{selectedLocation.board_count} Boards</p>
                                     <a
                                         href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${selectedLocation.address}, ${selectedLocation.city}, ${selectedLocation.state}`)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-600 hover:underline text-sm block mt-2 font-medium"
+                                        className="text-[var(--color-primary)] hover:underline text-sm block mt-2 font-bold"
                                     >
                                         Get Directions &rarr;
                                     </a>
@@ -219,18 +219,36 @@ export function LocationsMap({ locations }: LocationsMapProps) {
                     })()}
                 </GoogleMap>
 
+                {/* Custom Zoom Controls */}
+                <div className="absolute top-4 right-4 flex flex-col gap-2">
+                    <Button
+                        onClick={() => map?.setZoom((map.getZoom() || 10) + 1)}
+                        className="w-10 h-10 bg-neutral-900 border border-white/10 text-white hover:bg-neutral-800 p-0 rounded-md shadow-lg"
+                        title="Zoom In"
+                    >
+                        +
+                    </Button>
+                    <Button
+                        onClick={() => map?.setZoom((map.getZoom() || 10) - 1)}
+                        className="w-10 h-10 bg-neutral-900 border border-white/10 text-white hover:bg-neutral-800 p-0 rounded-md shadow-lg"
+                        title="Zoom Out"
+                    >
+                        -
+                    </Button>
+                </div>
+
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
                     {viewState === 'zoomed' ? (
                         <Button
                             onClick={resetView}
-                            className="bg-white hover:bg-neutral-200 text-black shadow-lg flex items-center gap-2"
+                            className="bg-neutral-900 hover:bg-neutral-800 text-white border border-white/10 shadow-lg flex items-center gap-2"
                         >
                             <MapIcon className="w-4 h-4" /> Show All Locations
                         </Button>
                     ) : (
                         <Button
                             onClick={findClosestLocation}
-                            className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-lg flex items-center gap-2"
+                            className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-lg flex items-center gap-2 border border-transparent"
                         >
                             <Navigation className="w-4 h-4" /> Find Closest Location
                         </Button>
@@ -242,11 +260,11 @@ export function LocationsMap({ locations }: LocationsMapProps) {
                 {locations.map(location => (
                     <Card
                         key={location.id}
-                        className={`p-6 border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group relative overflow-hidden ${selectedLocation?.id === location.id ? 'ring-2 ring-[var(--color-primary)] bg-white/10' : ''}`}
+                        className={`p-6 border-white/10 bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group relative ${selectedLocation?.id === location.id ? 'ring-2 ring-[var(--color-primary)] bg-white/10' : ''}`}
                         onClick={() => handleLocationClick(location)}
                     >
                         {location.is_new_location && (
-                            <div className="absolute top-0 right-0 bg-yellow-500 text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider">
+                            <div className="absolute -top-3 -right-3 z-10 bg-red-600 text-white text-[10px] font-extrabold px-3 py-1 uppercase tracking-wider rotate-[15deg] shadow-xl border border-white/10 rounded-sm transform group-hover:scale-110 transition-transform">
                                 New!
                             </div>
                         )}

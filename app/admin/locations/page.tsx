@@ -22,7 +22,10 @@ export default async function AdminLocationsPage() {
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
-                <h1 className="text-3xl font-bold text-white">Locations</h1>
+                <div>
+                    <h1 className="text-3xl font-bold text-white tracking-tight">Locations</h1>
+                    <p className="text-neutral-400 mt-1">Manage venue locations and details.</p>
+                </div>
                 <Button asChild className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white">
                     <Link href="/admin/locations/create">
                         <Plus className="w-4 h-4 mr-2" /> New Location

@@ -21,6 +21,9 @@ type Announcement = {
     is_featured?: boolean
 }
 
+// Standard label style reused across admin forms
+const labelStyles = "block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5"
+
 export function AnnouncementForm({ announcement }: { announcement?: Announcement }) {
     const isEditing = !!announcement
     // Local state for Rich Text Editor
@@ -30,52 +33,57 @@ export function AnnouncementForm({ announcement }: { announcement?: Announcement
         <form action={isEditing ? updateAnnouncement.bind(null, announcement.id) : createAnnouncement} className="space-y-6 max-w-2xl mx-auto">
             {/* Hidden input to sync with Server Action */}
             <input type="hidden" name="content" value={content} />
-            <div className="space-y-2">
-                <label htmlFor="title" className="text-sm font-medium text-white">Title</label>
-                <input
-                    id="title"
-                    name="title"
-                    defaultValue={announcement?.title}
-                    required
-                    className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50 font-sans"
-                />
-            </div>
+            <div className="space-y-4">
+                <div className="space-y-2">
+                    <label htmlFor="title" className={labelStyles}>Title</label>
+                    <input
+                        id="title"
+                        name="title"
+                        defaultValue={announcement?.title}
+                        required
+                        className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+                    />
+                </div>
 
-            <div className="space-y-2">
-                <label htmlFor="content" className="text-sm font-medium text-white">Content</label>
-                <RichTextEditor
-                    value={content}
-                    onChange={setContent}
-                />
+                <div className="space-y-2">
+                    <label htmlFor="content" className={labelStyles}>Content</label>
+                    <RichTextEditor
+                        value={content}
+                        onChange={setContent}
+                    />
+                </div>
             </div>
 
             {/* Hidden display_order input. We manage this via drag-and-drop. */}
             <input type="hidden" name="display_order" value={announcement?.display_order || 0} />
 
-            <div className="flex gap-6">
-                <div className="flex items-center gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            type="checkbox"
-                            name="is_active"
-                            defaultChecked={announcement?.is_active ?? true}
-                            className="rounded border-white/10 bg-neutral-900 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                        />
-                        <span className="text-sm font-medium text-white">Active</span>
-                    </label>
-                </div>
+            <div className="space-y-4">
 
-                <div className="flex items-center gap-2">
-                    <label className="flex items-center gap-2 cursor-pointer">
-                        <input
-                            id="is_featured"
-                            name="is_featured"
-                            type="checkbox"
-                            defaultChecked={announcement?.is_featured ?? false}
-                            className="rounded border-white/10 bg-neutral-900 text-yellow-500 focus:ring-yellow-500"
-                        />
-                        <span className="text-sm font-medium text-white">Featured</span>
-                    </label>
+                <div className="flex gap-6">
+                    <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="is_active"
+                                defaultChecked={announcement?.is_active ?? true}
+                                className="rounded border-white/10 bg-neutral-900 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                            />
+                            <span className="text-sm font-medium text-white">Active</span>
+                        </label>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                id="is_featured"
+                                name="is_featured"
+                                type="checkbox"
+                                defaultChecked={announcement?.is_featured ?? false}
+                                className="rounded border-white/10 bg-neutral-900 text-yellow-500 focus:ring-yellow-500"
+                            />
+                            <span className="text-sm font-medium text-white">Featured</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 

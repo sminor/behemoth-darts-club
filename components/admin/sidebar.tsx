@@ -10,7 +10,7 @@ const links = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
     { href: "/admin/locations", label: "Locations", icon: MapPin },
-    { href: "/admin/events", label: "Events", icon: Calendar, disabled: true },
+    { href: "/admin/events", label: "Events", icon: Calendar },
     { href: "/admin/leagues", label: "Leagues", icon: Users, disabled: true },
 ];
 

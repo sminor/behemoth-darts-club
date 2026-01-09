@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { createLocation, updateLocation, type Location } from "@/app/actions/locations"
 
+const labelStyles = "block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5"
+
 export function LocationForm({ location }: { location?: Location }) {
     const isEditing = !!location
 
@@ -10,10 +12,10 @@ export function LocationForm({ location }: { location?: Location }) {
         <form action={isEditing ? updateLocation.bind(null, location.id) : createLocation} className="space-y-8 max-w-2xl mx-auto">
 
             <div className="space-y-4">
-                <h3 className="text-lg font-medium text-white border-b border-white/10 pb-2">Basic Info</h3>
-                <div className="grid grid-cols-1 gap-4">
+                <h3 className="text-lg font-medium text-white border-b border-white/10 pb-2">Location Information</h3>
+                <div className="space-y-4">
                     <div className="space-y-2">
-                        <label htmlFor="name" className="text-sm font-medium text-white">Location Name</label>
+                        <label htmlFor="name" className={labelStyles}>Location Name</label>
                         <input
                             id="name"
                             name="name"
@@ -22,24 +24,21 @@ export function LocationForm({ location }: { location?: Location }) {
                             className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
                         />
                     </div>
-                </div>
-            </div>
 
-            <div className="space-y-4">
-                <h3 className="text-lg font-medium text-white border-b border-white/10 pb-2">Address</h3>
-                <div className="space-y-2">
-                    <label htmlFor="address" className="text-sm font-medium text-white">Street Address</label>
-                    <input
-                        id="address"
-                        name="address"
-                        defaultValue={location?.address}
-                        required
-                        className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
-                    />
+                    <div className="space-y-2">
+                        <label htmlFor="address" className={labelStyles}>Street Address</label>
+                        <input
+                            id="address"
+                            name="address"
+                            defaultValue={location?.address}
+                            required
+                            className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                        />
+                    </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <label htmlFor="city" className="text-sm font-medium text-white">City</label>
+                        <label htmlFor="city" className={labelStyles}>City</label>
                         <input
                             id="city"
                             name="city"
@@ -50,7 +49,7 @@ export function LocationForm({ location }: { location?: Location }) {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <label htmlFor="state" className="text-sm font-medium text-white">State</label>
+                            <label htmlFor="state" className={labelStyles}>State</label>
                             <input
                                 id="state"
                                 name="state"
@@ -60,7 +59,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label htmlFor="zip" className="text-sm font-medium text-white">Zip</label>
+                            <label htmlFor="zip" className={labelStyles}>Zip</label>
                             <input
                                 id="zip"
                                 name="zip"
@@ -77,7 +76,7 @@ export function LocationForm({ location }: { location?: Location }) {
                 <h3 className="text-lg font-medium text-white border-b border-white/10 pb-2">Coordinates (Map)</h3>
 
                 <div className="space-y-2">
-                    <label htmlFor="coordinates" className="text-sm font-medium text-white">Coordinates</label>
+                    <label htmlFor="coordinates" className={labelStyles}>Coordinates</label>
                     <input
                         id="coordinates"
                         name="coordinates"
@@ -92,7 +91,7 @@ export function LocationForm({ location }: { location?: Location }) {
                 </div>
 
                 <div className="space-y-2">
-                    <label htmlFor="google_place_id" className="text-sm font-medium text-white">Google Place ID (Optional)</label>
+                    <label htmlFor="google_place_id" className={labelStyles}>Google Place ID (Optional)</label>
                     <input
                         id="google_place_id"
                         name="google_place_id"
@@ -108,7 +107,7 @@ export function LocationForm({ location }: { location?: Location }) {
                 <h3 className="text-lg font-medium text-white border-b border-white/10 pb-2">Location Details</h3>
                 <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
-                        <label htmlFor="board_count" className="text-sm font-medium text-white">Number of Boards</label>
+                        <label htmlFor="board_count" className={labelStyles}>Number of Boards</label>
                         <input
                             id="board_count"
                             name="board_count"
@@ -132,7 +131,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             </label>
                         </div>
                         <div className="space-y-2">
-                            <label htmlFor="league_notes" className="text-sm font-medium text-white">League Availability Notes</label>
+                            <label htmlFor="league_notes" className={labelStyles}>League Availability Notes</label>
                             <input
                                 id="league_notes"
                                 name="league_notes"
