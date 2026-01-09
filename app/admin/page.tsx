@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Megaphone } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboard() {
     const { count: announcementsCount } = await supabase
         .from('announcements')

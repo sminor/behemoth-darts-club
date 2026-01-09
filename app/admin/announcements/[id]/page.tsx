@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditAnnouncementPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
 

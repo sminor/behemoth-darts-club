@@ -4,6 +4,8 @@ import { Plus } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { SortableAnnouncementsList } from "@/components/admin/sortable-announcements-list";
 
+export const dynamic = 'force-dynamic'
+
 export default async function AnnouncementsPage() {
     const { data: announcements } = await supabase
         .from('announcements')
