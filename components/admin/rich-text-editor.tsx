@@ -43,10 +43,15 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
                 }
                 .ql-editor {
                     min-height: 150px;
+                    font-family: inherit;
+                    font-size: 0.875rem; /* text-sm */
+                    padding: 0.75rem; /* Roughly match px-3 py-2 + extra for editor feel */
                 }
                 .ql-editor.ql-blank::before {
                     color: #a3a3a3 !important; /* text-neutral-400 */
                     font-style: normal;
+                    font-size: 0.875rem;
+                    left: 0.75rem;
                 }
                 /* Icon colors */
                 .ql-snow .ql-stroke {
@@ -63,8 +68,8 @@ export function RichTextEditor({ value, onChange, className }: RichTextEditorPro
                     stroke: var(--color-primary) !important;
                 }
              `}</style>
-            {/* text-base ensures 16px font size to match site */}
-            <div className="text-base rounded-md overflow-hidden">
+            {/* text-sm ensures 14px font size to match site inputs */}
+            <div className="text-sm font-sans rounded-md overflow-hidden">
                 <ReactQuill
                     theme="snow"
                     value={value}

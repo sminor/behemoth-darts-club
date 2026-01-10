@@ -83,9 +83,24 @@ export async function toggleAnnouncementStatus(id: string, currentStatus: boolea
 }
 
 export async function toggleAnnouncementFeatured(id: string, currentFeatured: boolean, _formData?: FormData) {
+    const newFeaturedStatus = !currentFeatured;
+
+    // If we are turning it ON, we must turn OFF all others first
+    if (newFeaturedStatus) {
+        const { error: resetError } = await supabase
+            .from('announcements')
+            .update({ is_featured: false })
+            .neq('id', '00000000-0000-0000-0000-000000000000') // Efficiently update all rows
+
+        if (resetError) {
+            console.error('Error resetting featured status:', resetError)
+            return
+        }
+    }
+
     const { error } = await supabase
         .from('announcements')
-        .update({ is_featured: !currentFeatured })
+        .update({ is_featured: newFeaturedStatus })
         .eq('id', id)
 
     if (error) {

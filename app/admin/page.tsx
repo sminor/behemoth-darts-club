@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Megaphone, MapPin, Calendar, FileText } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -65,7 +66,7 @@ export default async function AdminDashboard() {
                 <Card className="border-white/10 bg-white/5">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium text-neutral-400">
-                            Club Reports
+                            Stat Reports
                         </CardTitle>
                         <FileText className="h-4 w-4 text-[var(--color-primary)]" />
                     </CardHeader>

@@ -11,8 +11,8 @@ const links = [
     { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
     { href: "/admin/locations", label: "Locations", icon: MapPin },
     { href: "/admin/events", label: "Events", icon: Calendar },
-    { href: "/admin/reports", label: "Stat Reports", icon: FileText },
     { href: "/admin/leagues", label: "Leagues", icon: Users, disabled: true },
+    { href: "/admin/reports", label: "Stat Reports", icon: FileText },
 ];
 
 export function Sidebar() {
@@ -41,10 +41,10 @@ export function Sidebar() {
                             asChild={!link.disabled}
                         >
                             {link.disabled ? (
-                                <span>
+                                <>
                                     <Icon className="w-5 h-5" />
                                     {link.label}
-                                </span>
+                                </>
                             ) : (
                                 <Link href={link.href}>
                                     <Icon className="w-5 h-5" />

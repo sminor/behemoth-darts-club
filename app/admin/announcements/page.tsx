@@ -7,11 +7,11 @@ import { SortableAnnouncementsList } from "@/components/admin/sortable-announcem
 export const dynamic = 'force-dynamic'
 
 export default async function AnnouncementsPage() {
-    const { data: announcements } = await supabase
+    const { data: announcements, error } = await supabase
         .from('announcements')
         .select('*')
-        .order('is_featured', { ascending: false }) // Featured first
-        .order('display_order', { ascending: true }); // Strictly order by display_order for DnD list
+        .order('display_order', { ascending: true })
+        .order('created_at', { ascending: false }); // Strictly order by display_order for DnD list
 
     // We filter featured out of the sortable list if we want them separate, OR include them.
     // User requirement: "In the admin page, we could have these dragable."

@@ -29,7 +29,6 @@ type Announcement = {
 };
 
 export function SortableAnnouncementsList({ initialAnnouncements }: { initialAnnouncements: Announcement[] }) {
-    // Sort optimistic state by priority to be safe
     const [items, setItems] = useState(initialAnnouncements);
 
     const sensors = useSensors(
@@ -41,7 +40,6 @@ export function SortableAnnouncementsList({ initialAnnouncements }: { initialAnn
 
     const [isPending, startTransition] = useTransition();
 
-    // Sync with server data if it changes externally (optional but good)
     useEffect(() => {
         setItems(initialAnnouncements);
     }, [initialAnnouncements]);
@@ -50,16 +48,12 @@ export function SortableAnnouncementsList({ initialAnnouncements }: { initialAnn
         const { active, over } = event;
 
         if (active.id !== over?.id) {
-            // Calculate new items based on current state
             const oldIndex = items.findIndex((item) => item.id === active.id);
             const newIndex = items.findIndex((item) => item.id === over?.id);
 
             const newItems = arrayMove(items, oldIndex, newIndex);
-
-            // Optimistic update
             setItems(newItems);
 
-            // Calculate new display_order based on index
             const updates = newItems.map((item, index) => ({
                 id: item.id,
                 title: item.title,
@@ -67,7 +61,6 @@ export function SortableAnnouncementsList({ initialAnnouncements }: { initialAnn
                 display_order: index
             }));
 
-            // Sync with server
             startTransition(() => {
                 updateAnnouncementsOrder(updates);
             });
@@ -75,18 +68,30 @@ export function SortableAnnouncementsList({ initialAnnouncements }: { initialAnn
     }
 
     return (
-        <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-        >
-            <SortableContext items={items} strategy={verticalListSortingStrategy}>
-                <div className="space-y-4">
-                    {items.map((announcement) => (
-                        <SortableAnnouncementItem key={announcement.id} announcement={announcement} />
-                    ))}
-                </div>
-            </SortableContext>
-        </DndContext>
+        <div className="rounded-md border border-white/10 bg-white/5 overflow-hidden">
+            <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <SortableContext items={items} strategy={verticalListSortingStrategy}>
+                    <table className="w-full text-sm text-left table-fixed">
+                        <thead className="text-xs uppercase bg-white/5 text-neutral-400">
+                            <tr>
+                                <th className="px-2 py-3 w-[40px]"></th>
+                                <th className="px-6 py-3 w-28 text-center">Featured</th>
+                                <th className="px-6 py-3">Announcement</th>
+                                <th className="px-6 py-3 w-[140px] text-right"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {items.map((announcement) => (
+                                <SortableAnnouncementItem key={announcement.id} announcement={announcement} />
+                            ))}
+                        </tbody>
+                    </table>
+                </SortableContext>
+            </DndContext>
+        </div>
     );
 }
