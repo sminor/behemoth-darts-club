@@ -14,22 +14,15 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { PlayerSearch } from "@/components/player-search";
+import { LeagueReport } from "@/lib/leagueleader";
 import { ClubStatsViewer } from "@/components/club-stats-viewer";
-import Link from "next/link";
-import { ReportData } from "@/lib/leagueleader";
 
-interface Report {
-    id: string;
-    title: string;
-    url: string;
-    category: string;
-    active: boolean;
-}
+// ...
 
 interface StatsClientProps {
     initialReports: any[];
     initialSelectedReport: any;
-    initialReportData: ReportData | null;
+    initialReportData: LeagueReport | null;
     initialReportError: string | null;
 }
 

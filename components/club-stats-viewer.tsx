@@ -1,13 +1,13 @@
 "use client";
 
 import { Trophy, FilterX, ChevronDown, ChevronUp, Search } from "lucide-react";
-import { ReportData } from "@/lib/leagueleader";
+import { LeagueReport } from "@/lib/leagueleader";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 interface ClubStatsViewerProps {
-    reportData: ReportData;
+    reportData: LeagueReport;
     reportUrl: string;
     reportTitle: string;
     searchQuery: string;
@@ -21,8 +21,11 @@ export function ClubStatsViewer({ reportData, reportUrl, reportTitle, searchQuer
         setExpandedIndex(null);
     }, [reportUrl, searchQuery]);
 
+    // Flatten all rows from all tables
+    const allRows = reportData.tables.flatMap(table => table.rows);
+
     // Filter rows based on search query
-    const filteredRows = reportData.rows.filter((row) => {
+    const filteredRows = allRows.filter((row) => {
         if (!searchQuery.trim()) return false;
         const query = searchQuery.toLowerCase();
 

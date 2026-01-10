@@ -3,6 +3,7 @@
 
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
+@plugin "tailwindcss-animate";
 
 :root {
   /* Dark background matching mockup */

@@ -6,12 +6,19 @@ import { LayoutDashboard, Megaphone, MapPin, Calendar, Users, FileText } from "l
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
-const links = [
+type SidebarLink = {
+    href: string;
+    label: string;
+    icon: any;
+    disabled?: boolean;
+};
+
+const links: SidebarLink[] = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/announcements", label: "Announcements", icon: Megaphone },
     { href: "/admin/locations", label: "Locations", icon: MapPin },
     { href: "/admin/events", label: "Events", icon: Calendar },
-    { href: "/admin/leagues", label: "Leagues", icon: Users, disabled: true },
+    { href: "/admin/leagues", label: "Leagues", icon: Users },
     { href: "/admin/reports", label: "Stat Reports", icon: FileText },
 ];
 
