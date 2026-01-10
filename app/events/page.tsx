@@ -68,7 +68,8 @@ export default async function EventsPage() {
     // Filter out past events
     // Use ISO string comparison for date filtering to be timezone-agnostic relative to "Today"
     // We want to show events that are >= Today (local date) OR end_date >= Today
-    const todayStr = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+    // Use Pacific Time for "Today" comparison to ensure events show until end of local day
+    const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
 
     const futureEvents = processedEvents.filter(e => {
         // If it has an end date, check if end date is in future/today
