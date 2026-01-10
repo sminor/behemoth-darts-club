@@ -1,14 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Loader2, Trophy, Target, ChevronDown, ChevronUp, X } from 'lucide-react';
 import { searchADLPlayers, getADLPlayerDetails, type PlayerStats, type PlayerDetails } from '@/app/actions/adl';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export function PlayerSearch() {
-    const [query, setQuery] = useState('');
+interface PlayerSearchProps {
+    query: string;
+}
+
+export function PlayerSearch({ query = "" }: PlayerSearchProps) {
+    // Internal state for results and UI logic
     const [results, setResults] = useState<PlayerStats[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -16,27 +20,36 @@ export function PlayerSearch() {
     const [details, setDetails] = useState<Record<string, PlayerDetails>>({});
     const [loadingDetails, setLoadingDetails] = useState<string | null>(null);
 
-    const handleSearch = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!query.trim()) return;
-
-        setLoading(true);
-        setError(null);
-        setResults([]);
-        setExpandedPlayer(null);
-
-        try {
-            const data = await searchADLPlayers(query);
-            setResults(data);
-            if (data.length === 0) {
-                setError('No players found directly matching that name.');
+    // Effect to trigger search when query changes
+    useEffect(() => {
+        const search = async () => {
+            if (!query.trim()) {
+                setResults([]);
+                setError(null);
+                return;
             }
-        } catch (err) {
-            setError('Failed to fetch players. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
+
+            setLoading(true);
+            setError(null);
+            setExpandedPlayer(null);
+
+            try {
+                const data = await searchADLPlayers(query);
+                setResults(data);
+                if (data.length === 0) {
+                    setError('No players found directly matching that name.');
+                }
+            } catch (err) {
+                setError('Failed to fetch players. Please try again.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // Debounce search slightly to avoid excessive calls
+        const timer = setTimeout(search, 500);
+        return () => clearTimeout(timer);
+    }, [query]);
 
     const toggleDetails = async (player: PlayerStats) => {
         if (expandedPlayer === player.id) {
@@ -63,39 +76,12 @@ export function PlayerSearch() {
 
     return (
         <div className="space-y-8 max-w-2xl mx-auto w-full">
-            <form onSubmit={handleSearch} className="relative flex gap-2">
-                <div className="relative flex-grow">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
-                    <Input
-                        type="text"
-                        placeholder="Search player name (e.g. Smith)..."
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="pl-10 pr-10 h-10 bg-white/5 border-white/10 text-sm rounded-md focus:ring-[var(--color-primary)] placeholder:text-neutral-500"
-                    />
-                    {query && (
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setQuery('');
-                                setResults([]);
-                                setExpandedPlayer(null);
-                                setError(null);
-                            }}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white transition-colors"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    )}
+            {loading && (
+                <div className="text-center py-8">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto text-[var(--color-primary)]" />
+                    <p className="text-neutral-400 mt-2">Searching ADL database...</p>
                 </div>
-                <Button
-                    type="submit"
-                    disabled={loading || !query.trim()}
-                    className="h-10 px-6 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white rounded-md"
-                >
-                    {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Search'}
-                </Button>
-            </form>
+            )}
 
             {error && (
                 <div className="text-center p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-200">
@@ -105,7 +91,7 @@ export function PlayerSearch() {
 
             <div className="space-y-4">
                 {results.map(player => (
-                    <Card key={player.id} className="border-white/10 bg-white/5 overflow-hidden transition-all hover:border-white/20">
+                    <Card key={player.id} className="border-white/10 bg-white/5 overflow-hidden transition-all hover:border-[var(--color-primary)]">
                         <div
                             className="p-4 flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors"
                             onClick={() => toggleDetails(player)}
@@ -182,7 +168,12 @@ export function PlayerSearch() {
                         )}
                     </Card>
                 ))}
+
             </div>
+
+            <p className="text-center text-xs text-neutral-500 mt-8">
+                Data provided by Action Dart League.
+            </p>
         </div>
     );
 }

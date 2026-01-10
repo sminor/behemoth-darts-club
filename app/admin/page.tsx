@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Megaphone, MapPin, Calendar } from "lucide-react";
+import { Megaphone, MapPin, Calendar, FileText } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export const dynamic = 'force-dynamic'
@@ -15,6 +15,10 @@ export default async function AdminDashboard() {
 
     const { count: eventsCount } = await supabase
         .from('events')
+        .select('*', { count: 'exact', head: true });
+
+    const { count: reportsCount } = await supabase
+        .from('data_sources')
         .select('*', { count: 'exact', head: true });
 
     return (
@@ -55,6 +59,18 @@ export default async function AdminDashboard() {
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold text-white">{eventsCount || 0}</div>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-white/10 bg-white/5">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium text-neutral-400">
+                            Club Reports
+                        </CardTitle>
+                        <FileText className="h-4 w-4 text-[var(--color-primary)]" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold text-white">{reportsCount || 0}</div>
                     </CardContent>
                 </Card>
             </div>

@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Loader2 } from 'lucide-react'
 
 // Basic input styles reused
-// Basic input styles reused - exact match to LocationForm
-const inputStyles = "flex h-10 w-full bg-neutral-900 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
+const inputStyles = "flex h-10 w-full bg-neutral-900 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
 const labelStyles = "block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5"
 
 export function EventForm({ event, locations }: { event?: any, locations: any[] }) {
@@ -166,15 +166,16 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                     <div>
                         <label className={labelStyles}>Event Type</label>
                         <div className="relative">
-                            <select
-                                value={type}
-                                onChange={e => setType(e.target.value)}
-                                className={inputStyles}
-                            >
-                                <option value="local" className="bg-neutral-900">Local</option>
-                                <option value="special" className="bg-neutral-900">Special</option>
-                                <option value="travel" className="bg-neutral-900">Travel</option>
-                            </select>
+                            <Select value={type} onValueChange={setType}>
+                                <SelectTrigger className={inputStyles}>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-neutral-900 border-white/10 text-white">
+                                    <SelectItem value="local">Local</SelectItem>
+                                    <SelectItem value="special">Special</SelectItem>
+                                    <SelectItem value="travel">Travel</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                     </div>
                 </div>
@@ -188,28 +189,36 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                     <div>
                         <label className={labelStyles}>Location Type</label>
                         <div className="relative mb-4">
-                            <select
+                            <Select
                                 value={useCustomLocation ? 'custom' : 'existing'}
-                                onChange={e => setUseCustomLocation(e.target.value === 'custom')}
-                                className={inputStyles}
+                                onValueChange={(val) => setUseCustomLocation(val === 'custom')}
                             >
-                                <option value="existing" className="bg-neutral-900">Existing Venue</option>
-                                <option value="custom" className="bg-neutral-900">Custom / Travel</option>
-                            </select>
+                                <SelectTrigger className={inputStyles}>
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-neutral-900 border-white/10 text-white">
+                                    <SelectItem value="existing">Existing Venue</SelectItem>
+                                    <SelectItem value="custom">Custom / Travel</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
 
                         {!useCustomLocation ? (
-                            <select
+                            <Select
                                 value={locationId}
-                                onChange={e => setLocationId(e.target.value)}
-                                className={inputStyles}
+                                onValueChange={setLocationId}
                             >
-                                {locations.map(loc => (
-                                    <option key={loc.id} value={loc.id} className="bg-neutral-900 text-white">
-                                        {loc.name} - {loc.city}
-                                    </option>
-                                ))}
-                            </select>
+                                <SelectTrigger className={inputStyles}>
+                                    <SelectValue placeholder="Select a location" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-neutral-900 border-white/10 text-white">
+                                    {locations.map(loc => (
+                                        <SelectItem key={loc.id} value={loc.id}>
+                                            {loc.name} - {loc.city}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         ) : (
                             <div className="space-y-4 animate-in fade-in slide-in-from-top-2">
                                 <div>
