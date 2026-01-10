@@ -2,7 +2,7 @@ import { supabase } from "@/lib/supabase"
 import { LocationsMap } from "@/components/locations-map"
 import Link from "next/link"
 import { Metadata } from "next"
-import { MapPin, ArrowLeft } from "lucide-react"
+import { MapPin, ArrowLeft, Home } from "lucide-react"
 
 export const metadata: Metadata = {
     title: 'Locations | Behemoth Darts Club',
@@ -29,9 +29,11 @@ export default async function LocationsPage() {
         <div className="min-h-screen bg-[var(--background)]">
             <header className="border-b border-white/10 bg-neutral-900/50 backdrop-blur-sm sticky top-0 z-10">
                 <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-2">
-                        <ArrowLeft className="w-4 h-4" /> Back to Home
-                    </Link>
+                    <div className="w-[100px] flex justify-start">
+                        <Link href="/" className="hover:text-white transition-colors group">
+                            <Home className="w-5 h-5 text-[var(--color-primary)] opacity-80 group-hover:opacity-100 transition-opacity" />
+                        </Link>
+                    </div>
                     <h1 className="text-xl font-bold text-white tracking-wider uppercase">
                         Our <span className="text-[var(--color-primary)]">Locations</span>
                     </h1>

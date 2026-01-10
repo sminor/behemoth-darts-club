@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, ArrowLeft, Trophy, Plane, Ticket, Star, PartyPopper } from "lucide-react";
+import { Calendar, Clock, MapPin, ArrowLeft, Trophy, Plane, Ticket, Star, PartyPopper, Home } from "lucide-react";
 import { supabase } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
@@ -117,9 +117,11 @@ export default async function EventsPage() {
             {/* Sticky Header */}
             <header className="border-b border-white/10 bg-neutral-900/50 backdrop-blur-sm sticky top-0 z-20 mb-8">
                 <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-                    <Link href="/" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors flex items-center gap-2">
-                        <ArrowLeft className="w-4 h-4" /> Back to Home
-                    </Link>
+                    <div className="w-[100px] flex justify-start">
+                        <Link href="/" className="hover:text-white transition-colors group">
+                            <Home className="w-5 h-5 text-[var(--color-primary)] opacity-80 group-hover:opacity-100 transition-opacity" />
+                        </Link>
+                    </div>
                     <h1 className="text-xl font-bold text-white tracking-wider uppercase flex items-center gap-2">
                         Upcoming <span className="text-[var(--color-primary)]">Events</span>
                     </h1>
