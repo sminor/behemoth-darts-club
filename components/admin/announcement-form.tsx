@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input" // Need to ensure Input exists or create it
 import { createAnnouncement, updateAnnouncement } from "@/app/actions/announcements"
 import { RichTextEditor } from "./rich-text-editor";
 import { useState } from "react";
@@ -41,7 +40,7 @@ export function AnnouncementForm({ announcement }: { announcement?: Announcement
                         name="title"
                         defaultValue={announcement?.title}
                         required
-                        className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50 font-sans"
+                        className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-50 transition-all font-sans"
                     />
                 </div>
 
@@ -59,19 +58,7 @@ export function AnnouncementForm({ announcement }: { announcement?: Announcement
 
             <div className="space-y-4">
 
-                <div className="flex gap-6">
-                    <div className="flex items-center gap-2">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                            <input
-                                type="checkbox"
-                                name="is_active"
-                                defaultChecked={announcement?.is_active ?? true}
-                                className="rounded border-white/10 bg-neutral-900 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                            />
-                            <span className="text-sm font-medium text-white">Active</span>
-                        </label>
-                    </div>
-
+                <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-2">
                         <label className="flex items-center gap-2 cursor-pointer">
                             <input
@@ -79,9 +66,21 @@ export function AnnouncementForm({ announcement }: { announcement?: Announcement
                                 name="is_featured"
                                 type="checkbox"
                                 defaultChecked={announcement?.is_featured ?? false}
-                                className="rounded border-white/10 bg-neutral-900 text-yellow-500 focus:ring-yellow-500"
+                                className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-yellow-500 focus:ring-yellow-500"
                             />
-                            <span className="text-sm font-medium text-white">Featured</span>
+                            <span className="text-sm font-medium text-white">Featured (Highlight)</span>
+                        </label>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="is_active"
+                                defaultChecked={announcement?.is_active ?? true}
+                                className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                            />
+                            <span className="text-sm font-medium text-white">Active (Visible on site)</span>
                         </label>
                     </div>
                 </div>

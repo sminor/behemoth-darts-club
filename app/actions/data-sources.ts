@@ -18,6 +18,7 @@ export async function createDataSource(formData: FormData) {
     const title = formData.get('title') as string
     const url = formData.get('url') as string
     const category = formData.get('category') as string
+    const is_active = formData.get('is_active') === 'on'
     const is_default = formData.get('is_default') === 'on'
 
     // If making this default, unset others first (simplest approach, though trigger/function is better for concurrency)
@@ -35,7 +36,7 @@ export async function createDataSource(formData: FormData) {
             title,
             url,
             category,
-            is_active: true,
+            is_active,
             is_default
         })
 

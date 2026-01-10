@@ -21,7 +21,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             name="name"
                             defaultValue={location?.name}
                             required
-                            className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                            className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                         />
                     </div>
 
@@ -32,7 +32,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             name="address"
                             defaultValue={location?.address}
                             required
-                            className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                            className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                         />
                     </div>
                 </div>
@@ -44,7 +44,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             name="city"
                             defaultValue={location?.city}
                             required
-                            className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                            className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -55,7 +55,7 @@ export function LocationForm({ location }: { location?: Location }) {
                                 name="state"
                                 defaultValue={location?.state || 'OR'}
                                 required
-                                className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                                className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                             />
                         </div>
                         <div className="space-y-2">
@@ -65,7 +65,7 @@ export function LocationForm({ location }: { location?: Location }) {
                                 name="zip"
                                 defaultValue={location?.zip}
                                 required
-                                className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                                className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                             />
                         </div>
                     </div>
@@ -83,7 +83,7 @@ export function LocationForm({ location }: { location?: Location }) {
                         defaultValue={location?.coordinates}
                         placeholder="e.g. 45.523914, -123.039457"
                         required
-                        className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                        className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                     />
                     <p className="text-[10px] text-neutral-500">
                         Right-click a location in Google Maps and copy the coordinates (e.g. &quot;45.523, -123.039&quot;)
@@ -97,7 +97,7 @@ export function LocationForm({ location }: { location?: Location }) {
                         name="google_place_id"
                         defaultValue={location?.google_place_id || ''}
                         placeholder="ChIJ..."
-                        className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                        className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                     />
                     <p className="text-xs text-neutral-500">Needed for fetching photos/reviews in the future.</p>
                 </div>
@@ -114,7 +114,7 @@ export function LocationForm({ location }: { location?: Location }) {
                             type="number"
                             min="0"
                             defaultValue={location?.board_count || 0}
-                            className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                            className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                         />
                     </div>
 
@@ -125,7 +125,7 @@ export function LocationForm({ location }: { location?: Location }) {
                                     type="checkbox"
                                     name="is_league_venue"
                                     defaultChecked={location?.is_league_venue ?? false}
-                                    className="rounded border-white/10 bg-neutral-900 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                                    className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                                 />
                                 <span className="text-sm font-medium text-white">Available for League Play</span>
                             </label>
@@ -137,32 +137,32 @@ export function LocationForm({ location }: { location?: Location }) {
                                 name="league_notes"
                                 placeholder="e.g. Mondays and Wednesdays only"
                                 defaultValue={location?.league_notes || ''}
-                                className="flex h-10 w-full rounded-md border border-white/10 bg-neutral-900 px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+                                className="flex h-10 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-3 py-2 text-sm text-white placeholder:text-neutral-400 focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] transition-all font-sans"
                             />
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="flex items-center gap-6 pt-4 border-t border-white/10">
-                <label className="flex items-center gap-2 cursor-pointer">
-                    <input
-                        type="checkbox"
-                        name="is_active"
-                        defaultChecked={location?.is_active ?? true}
-                        className="rounded border-white/10 bg-neutral-900 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
-                    />
-                    <span className="text-sm font-medium text-white">Active</span>
-                </label>
-
+            <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
                 <label className="flex items-center gap-2 cursor-pointer">
                     <input
                         type="checkbox"
                         name="is_new_location"
                         defaultChecked={location?.is_new_location ?? false}
-                        className="rounded border-white/10 bg-neutral-900 text-yellow-500 focus:ring-yellow-500"
+                        className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-yellow-500 focus:ring-yellow-500"
                     />
                     <span className="text-sm font-medium text-white">New Location (Highlight)</span>
+                </label>
+
+                <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                        type="checkbox"
+                        name="is_active"
+                        defaultChecked={location?.is_active ?? true}
+                        className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                    />
+                    <span className="text-sm font-medium text-white">Active (Visible on site)</span>
                 </label>
             </div>
 

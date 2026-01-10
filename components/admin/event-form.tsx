@@ -5,11 +5,26 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2 } from 'lucide-react'
+import { format } from "date-fns"
+import { Calendar as CalendarIcon, Loader2 } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { cn } from "@/lib/utils"
 
 // Basic input styles reused
-const inputStyles = "flex h-10 w-full bg-neutral-900 border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-2 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
+const inputStyles = "flex h-10 w-full bg-[#0A0A0A] border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
 const labelStyles = "block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5"
+
+// Helper to safely parse yyyy-mm-dd to local Date
+const parseDateString = (dateStr: string) => {
+    if (!dateStr) return undefined
+    const [y, m, d] = dateStr.split('-').map(Number)
+    return new Date(y, m - 1, d)
+}
 
 export function EventForm({ event, locations }: { event?: any, locations: any[] }) {
     const router = useRouter()
@@ -120,30 +135,58 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                         {/* Start Date */}
                         <div>
                             <label className={labelStyles}>{isMultiDay ? 'Start Date' : 'Date'}</label>
-                            <div className="relative">
-                                <input
-                                    required
-                                    type="date"
-                                    value={date}
-                                    onChange={e => setDate(e.target.value)}
-                                    className={`${inputStyles} [color-scheme:dark] w-full max-w-full`}
-                                />
-                            </div>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                            inputStyles,
+                                            "w-auto justify-start text-left font-normal px-3",
+                                            !date && "text-neutral-400"
+                                        )}
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {date ? format(parseDateString(date)!, "PPP") : <span>Pick a date</span>}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-[#0A0A0A] border-white/10" align="start">
+                                    <Calendar
+                                        mode="single"
+                                        selected={parseDateString(date)}
+                                        onSelect={(d) => setDate(d ? format(d, "yyyy-MM-dd") : "")}
+                                        initialFocus
+                                    />
+                                </PopoverContent>
+                            </Popover>
                         </div>
                         {/* End Date */}
                         {isMultiDay && (
                             <div>
                                 <label className={labelStyles}>End Date</label>
-                                <div className="relative">
-                                    <input
-                                        required
-                                        type="date"
-                                        value={endDate}
-                                        min={date}
-                                        onChange={e => setEndDate(e.target.value)}
-                                        className={`${inputStyles} [color-scheme:dark] w-full max-w-full`}
-                                    />
-                                </div>
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant={"outline"}
+                                            className={cn(
+                                                inputStyles,
+                                                "w-auto justify-start text-left font-normal px-3",
+                                                !endDate && "text-neutral-400"
+                                            )}
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {endDate ? format(parseDateString(endDate)!, "PPP") : <span>Pick a date</span>}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent className="w-auto p-0 bg-[#0A0A0A] border-white/10" align="start">
+                                        <Calendar
+                                            mode="single"
+                                            selected={parseDateString(endDate)}
+                                            onSelect={(d) => setEndDate(d ? format(d, "yyyy-MM-dd") : "")}
+                                            initialFocus
+                                            disabled={(currentDay) => currentDay < (parseDateString(date) || new Date())}
+                                        />
+                                    </PopoverContent>
+                                </Popover>
                             </div>
                         )}
                     </div>
@@ -170,7 +213,7 @@ export function EventForm({ event, locations }: { event?: any, locations: any[] 
                                 <SelectTrigger className={inputStyles}>
                                     <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="bg-neutral-900 border-white/10 text-white">
+                                <SelectContent className="bg-[#0A0A0A] border-white/10 text-white">
                                     <SelectItem value="local">Local</SelectItem>
                                     <SelectItem value="special">Special</SelectItem>
                                     <SelectItem value="travel">Travel</SelectItem>

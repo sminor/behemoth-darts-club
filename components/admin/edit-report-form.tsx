@@ -2,8 +2,6 @@
 
 import { updateDataSource } from "@/app/actions/data-sources"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Save, Loader2 } from "lucide-react"
 import Link from "next/link"
@@ -35,39 +33,39 @@ export function EditReportForm({ report }: EditReportFormProps) {
         <form action={updateWithId} className="space-y-6">
             {/* Title */}
             <div className="space-y-2">
-                <Label htmlFor="title" className="text-white">Report Title</Label>
-                <Input
+                <label htmlFor="title" className="block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5">Report Title</label>
+                <input
                     id="title"
                     name="title"
                     defaultValue={report.title}
                     placeholder="e.g. 2026 Season Stats or January 2026"
                     required
-                    className="bg-black/20 border-white/10 text-white focus:border-[var(--color-primary)] input-dark"
+                    className="flex h-10 w-full bg-[#0A0A0A] border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
                 />
             </div>
 
             {/* URL */}
             <div className="space-y-2">
-                <Label htmlFor="url" className="text-white">LeagueLeader URL</Label>
-                <Input
+                <label htmlFor="url" className="block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5">LeagueLeader URL</label>
+                <input
                     id="url"
                     name="url"
                     defaultValue={report.url}
                     placeholder="https://leagueleader.net/sharedreport.php?..."
                     required
                     type="url"
-                    className="bg-black/20 border-white/10 text-white focus:border-[var(--color-primary)] input-dark"
+                    className="flex h-10 w-full bg-[#0A0A0A] border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans"
                 />
             </div>
 
             <div className="grid grid-cols-1 gap-6">
                 <div className="space-y-2">
-                    <Label htmlFor="category" className="text-white">Category</Label>
+                    <label htmlFor="category" className="block text-xs uppercase tracking-wider font-bold text-neutral-400 mb-1.5">Category</label>
                     <Select name="category" required defaultValue={report.category}>
-                        <SelectTrigger className="bg-black/20 border-white/10 text-white select-trigger-dark">
+                        <SelectTrigger className="flex h-10 w-full bg-[#0A0A0A] border border-white/10 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-transparent focus:ring-1 focus:ring-[var(--color-primary)] placeholder:text-neutral-400 transition-all font-sans">
                             <SelectValue placeholder="Select Category" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-[#0A0A0A] border-white/10 text-white">
                             <SelectItem value="Yearly">Yearly</SelectItem>
                             <SelectItem value="Monthly">Monthly</SelectItem>
                             <SelectItem value="All Time">All Time</SelectItem>
@@ -84,9 +82,9 @@ export function EditReportForm({ report }: EditReportFormProps) {
                         id="is_default"
                         name="is_default"
                         defaultChecked={report.is_default}
-                        className="w-4 h-4 rounded border-white/10 bg-black/20 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                        className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                     />
-                    <Label htmlFor="is_default" className="text-white">Default Report (First visible)</Label>
+                    <label htmlFor="is_default" className="text-sm font-medium text-white cursor-pointer select-none">Default Report (First visible)</label>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -95,9 +93,9 @@ export function EditReportForm({ report }: EditReportFormProps) {
                         id="is_active"
                         name="is_active"
                         defaultChecked={report.is_active}
-                        className="w-4 h-4 rounded border-white/10 bg-black/20 text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                        className="w-4 h-4 rounded border-white/10 bg-[#0A0A0A] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
                     />
-                    <Label htmlFor="is_active" className="text-white">Active (Visible on site)</Label>
+                    <label htmlFor="is_active" className="text-sm font-medium text-white cursor-pointer select-none">Active (Visible on site)</label>
                 </div>
             </div>
 
