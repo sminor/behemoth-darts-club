@@ -21,7 +21,8 @@ export function EventsList({ events }: { events: any[] }) {
 
         // Actually, simplest is just treating the DB date string as the source of truth.
         // If event.date is "2026-01-09", and today is 2026-01-09...
-        const todayStr = new Date().toISOString().split('T')[0];
+        // Use Pacific Time for "Today" comparison
+        const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
         return event.date >= todayStr;
     });
 
