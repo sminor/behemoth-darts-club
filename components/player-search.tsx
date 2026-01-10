@@ -90,6 +90,17 @@ export function PlayerSearch({ query = "" }: PlayerSearchProps) {
             )}
 
             <div className="space-y-4">
+                {!query.trim() && (
+                    <div className="text-center py-16 text-neutral-500 bg-white/5 rounded-xl border border-white/5 flex flex-col items-center justify-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
+                            <Search className="w-6 h-6 opacity-50" />
+                        </div>
+                        <div>
+                            <p className="font-medium text-white">Search to view stats</p>
+                            <p className="text-sm">Enter a player name above to see their ADL stats.</p>
+                        </div>
+                    </div>
+                )}
                 {results.map(player => (
                     <Card key={player.id} className="border-white/10 bg-white/5 overflow-hidden transition-all hover:border-[var(--color-primary)]">
                         <div
